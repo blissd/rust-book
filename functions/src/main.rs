@@ -17,5 +17,5 @@ fn five() -> i32 {
 }
 
 fn plus_one(value: i32) -> i32 {
-    value + 1
+    value + 1;
 }
