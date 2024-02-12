@@ -14,6 +14,11 @@ fn main() {
     };
 
     user1.email = String::from("foo@example.com");
+
+    let user2 = User {
+        email: String::from("user2@example.com"),
+        ..user1
+    };
 }
 
 fn build_user(email: String, username: String) -> User {
