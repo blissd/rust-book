@@ -1,14 +1,15 @@
 fn main() {
-    let s = String::from("Hello, world!");
-    let i = first_word(&s);
-    println!("{} first word ends at {}", s, i);
+    let s = String::from("Hello world!");
+    let w = first_word(&s);
+    println!("{} first word is {}", s, w);
 }
 
-fn first_word(s: &String) -> usize {
+fn first_word(s: &String) -> &str {
     let bytes = s.as_bytes();
     for (i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
-            return i;
+            return &s[0..i];
         }
     }
-    s.len()}
+    &s[..]
+}
