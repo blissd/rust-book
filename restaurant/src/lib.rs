@@ -20,6 +20,11 @@ mod back_of_house {
         seasonal_fruit: String,
     }
 
+    pub enum Appetizer {
+        Soup,
+        Salad,
+    }
+
     impl Breakfast {
         pub fn summer(toast: &str) -> Breakfast {
             Breakfast {
@@ -37,11 +42,18 @@ mod back_of_house {
     fn cook_order() {}
 }
 
-pub fn eat_at_restaurant() {
-    // Order breakfast with summer Rye toast.
-    let mut meal = back_of_house::Breakfast::summer("Rye");
+mod customer {
+    use crate::back_of_house::Breakfast;
+    use crate::front_of_house::hosting;
 
-    // Change our mind about the bread we want.
-    meal.toast = String::from("Wheat");
-    println!("I'd like {} toast please", meal.toast);
+    pub fn eat_at_restaurant() {
+        hosting::add_to_waitlist();
+
+        // Order breakfast with summer Rye toast.
+        let mut meal = Breakfast::summer("Rye");
+
+        // Change our mind about the bread we want.
+        meal.toast = String::from("Wheat");
+        println!("I'd like {} toast please", meal.toast);
+    }
 }
