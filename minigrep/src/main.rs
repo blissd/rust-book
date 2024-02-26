@@ -12,8 +12,11 @@ fn main() {
     println!("Searching for {}", config.query);
     println!("In file {}", config.file_path);
 
-    let contents = fs::read_to_string(config.file_path).expect("Failed reading file");
+    run(config);
+}
 
+fn run(config: Config) {
+    let contents = fs::read_to_string(config.file_path).expect("Failed reading file");
     println!("With text: {}", contents);
 }
 
