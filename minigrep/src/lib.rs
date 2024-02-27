@@ -8,25 +8,20 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        args.next(); // consume executable name
 
-        let mut ignore_case = env::var("IGNORE_CASE").is_ok();
-        let query;
-        let file_path;
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
 
-        if args.len() == 4 && args[1] == "-i".to_string() {
-            ignore_case = true;
-            query = args[2].clone();
-            file_path = args[3].clone();
-        } else if args.len() == 3 {
-            query = args[1].clone();
-            file_path = args[2].clone();
-        } else {
-            return Err("first argument invalid");
-        }
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file path"),
+        };
+
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
 
         Ok(Config {
             query,
