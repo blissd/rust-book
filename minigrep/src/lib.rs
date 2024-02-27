@@ -12,10 +12,21 @@ impl Config {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
-        let query = args[1].clone();
-        let file_path = args[2].clone();
 
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+        let mut ignore_case = env::var("IGNORE_CASE").is_ok();
+        let query;
+        let file_path;
+
+        if args.len() == 4 && args[1] == "-i".to_string() {
+            ignore_case = true;
+            query = args[2].clone();
+            file_path = args[3].clone();
+        } else if args.len() == 3 {
+            query = args[1].clone();
+            file_path = args[2].clone();
+        } else {
+            return Err("first argument invalid");
+        }
 
         Ok(Config {
             query,
