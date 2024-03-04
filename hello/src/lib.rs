@@ -3,7 +3,7 @@ use std::thread;
 
 struct Worker {
     id: usize,
-    thread: thread::JoinHandle<()>,
+    thread: Option<thread::JoinHandle<()>>,
 }
 
 impl Worker {
@@ -13,6 +13,7 @@ impl Worker {
             println!("Worker {id} got job; executing.");
             job();
         });
+        let thread = Some(thread);
         Worker { id, thread }
     }
 }
@@ -54,5 +55,16 @@ impl ThreadPool {
     {
         let job = Box::new(f);
         self.sender.send(job).unwrap();
+    }
+}
+
+impl Drop for ThreadPool {
+    fn drop(&mut self) {
+        for worker in &mut self.workers {
+            println!("Shutting down worker {}", worker.id);
+            if let Some(thread) = worker.thread.take() {
+                thread.join().unwrap();
+            }
+        }
     }
 }
